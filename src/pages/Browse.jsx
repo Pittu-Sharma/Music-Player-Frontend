@@ -29,7 +29,7 @@ const Browse = ({ onPlay, currentTrack, isPlaying, toggleFavorite, isFavorite })
   const fetchTracks = async (genre) => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:5000/api/music/genre/${genre}`);
+      const response = await axios.get(`https://music-player-backend-ufnm.onrender.com/api/music/genre/${genre}`);
       const fetchedTracks = response.data.data || [];
       setTracks(fetchedTracks);
       setCache(prev => ({ ...prev, [genre]: fetchedTracks }));
