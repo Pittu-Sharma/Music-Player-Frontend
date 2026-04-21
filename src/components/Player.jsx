@@ -13,23 +13,30 @@ const Player = ({ track, isPlaying, setIsPlaying }) => {
   const [isMuted, setIsMuted] = useState(false);
   const [fullStreamUrl, setFullStreamUrl] = useState(null);
   const [isResolving, setIsResolving] = useState(false);
+  const [streamReady, setStreamReady] = useState(false);
 
-
+  // Control play/pause based on isPlaying state, but only after stream is ready
   useEffect(() => {
-    if (audioRef.current && track) {
+    if (audioRef.current && track && streamReady) {
       if (isPlaying) {
         audioRef.current.play().catch(e => {});
-
       } else {
         audioRef.current.pause();
       }
     }
-  }, [isPlaying, track, fullStreamUrl]);
+  }, [isPlaying, track, streamReady]);
 
+  // When a new track is selected, resolve the full stream (don't play the preview)
   useEffect(() => {
     if (track) {
       setFullStreamUrl(null);
       setIsResolving(true);
+      setStreamReady(false);
+
+      // Pause any current playback immediately
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
 
       // Use AbortController to cancel stale requests when clicking songs rapidly
       const abortController = new AbortController();
@@ -47,9 +54,15 @@ const Player = ({ track, isPlaying, setIsPlaying }) => {
           
           if (response.data.url && !abortController.signal.aborted) {
             setFullStreamUrl(response.data.url);
+          } else if (!abortController.signal.aborted) {
+            // No full stream found, fall back to preview for the full-song path
+            setFullStreamUrl(track.preview);
           }
         } catch (error) {
-          // Resolution failed or was cancelled, sticking to preview
+          // Resolution failed, fall back to preview as last resort
+          if (!abortController.signal.aborted) {
+            setFullStreamUrl(track.preview);
+          }
         } finally {
           if (!abortController.signal.aborted) {
             setIsResolving(false);
@@ -57,24 +70,20 @@ const Player = ({ track, isPlaying, setIsPlaying }) => {
         }
       };
 
-      // Start resolving immediately - preview plays instantly via audio src
       resolveTrack();
       return () => abortController.abort();
     }
   }, [track?.id]);
 
+  // Once we have a stream URL (full or fallback), set it on the audio element and play
   useEffect(() => {
     if (fullStreamUrl && audioRef.current) {
-      const currentPos = audioRef.current.currentTime;
-      const wasPlaying = !audioRef.current.paused;
-      
-      // Update source to full stream
       audioRef.current.src = fullStreamUrl;
-      audioRef.current.currentTime = currentPos;
+      audioRef.current.currentTime = 0;
+      setStreamReady(true);
       
-      if (wasPlaying) {
+      if (isPlaying) {
         audioRef.current.play().catch(e => {});
-
       }
     }
   }, [fullStreamUrl]);
@@ -137,7 +146,7 @@ const Player = ({ track, isPlaying, setIsPlaying }) => {
     >
       <audio 
         ref={audioRef}
-        src={fullStreamUrl || track.preview}
+        src={fullStreamUrl || ''}
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleTimeUpdate}
         onEnded={() => setIsPlaying(false)}

@@ -11,7 +11,13 @@ import Library from './pages/Library';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import useFavorites from './hooks/useFavorites';
+import usePlaylists from './hooks/usePlaylists';
+import Playlist from './pages/Playlist';
+import Cartoons from './pages/Cartoons';
+import Anime from './pages/Anime';
+
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ToastProvider } from './context/ToastContext';
 
 const ProfileButton = () => {
   const { user, logout } = useAuth();
@@ -56,6 +62,7 @@ const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { favorites, toggleFavorite, isFavorite } = useFavorites();
+  const { playlists, createPlaylist, addToPlaylist, removeFromPlaylist, deletePlaylist } = usePlaylists();
 
   const playTrack = (track) => {
     setCurrentTrack(track);
@@ -75,7 +82,12 @@ const App = () => {
     currentTrack,
     isPlaying,
     toggleFavorite,
-    isFavorite
+    isFavorite,
+    playlists,
+    createPlaylist,
+    addToPlaylist,
+    removeFromPlaylist,
+    deletePlaylist
   };
 
   return (
@@ -86,14 +98,13 @@ const App = () => {
       position: 'relative'
     }}>
       <NebulaBackground />
-      <Sidebar />
+      <Sidebar playlists={playlists} createPlaylist={createPlaylist} />
       
       <main style={{
         flex: 1,
         overflowY: 'auto',
         padding: '24px 40px 160px 40px',
-        position: 'relative',
-        zIndex: 1
+        position: 'relative'
       }}>
         <div className="header" style={{
           display: 'flex',
@@ -163,6 +174,10 @@ const App = () => {
               <Route path="/search" element={<Search query={searchQuery} {...commonProps} />} />
               <Route path="/favorites" element={<Favorites favorites={favorites} {...commonProps} />} />
               <Route path="/library" element={<Library favorites={favorites} {...commonProps} />} />
+              <Route path="/playlist/:id" element={<Playlist {...commonProps} />} />
+              <Route path="/cartoons" element={<Cartoons {...commonProps} />} />
+              <Route path="/anime" element={<Anime {...commonProps} />} />
+
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
             </Routes>
@@ -181,6 +196,8 @@ const App = () => {
 
 export default () => (
   <AuthProvider>
-    <App />
+    <ToastProvider>
+      <App />
+    </ToastProvider>
   </AuthProvider>
 );

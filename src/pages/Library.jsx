@@ -3,7 +3,7 @@ import { User, Music, Heart, Play } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SongCard from '../components/SongCard';
 
-const Library = ({ favorites, onPlay, currentTrack, isPlaying, toggleFavorite, isFavorite }) => {
+const Library = ({ favorites, onPlay, currentTrack, isPlaying, toggleFavorite, isFavorite, playlists, addToPlaylist }) => {
   return (
     <div className="library-page">
       <div className="glass-panel" style={{
@@ -63,6 +63,8 @@ const Library = ({ favorites, onPlay, currentTrack, isPlaying, toggleFavorite, i
               isCurrent={currentTrack?.id === track.id}
               toggleFavorite={toggleFavorite}
               isFavorite={isFavorite(track.id)}
+              playlists={playlists}
+              addToPlaylist={addToPlaylist}
             />
           ))}
         </div>

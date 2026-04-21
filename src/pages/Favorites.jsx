@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import SongCard from '../components/SongCard';
 
-const Favorites = ({ favorites, onPlay, currentTrack, isPlaying, toggleFavorite, isFavorite }) => {
+const Favorites = ({ favorites, onPlay, currentTrack, isPlaying, toggleFavorite, isFavorite, playlists, addToPlaylist }) => {
   return (
     <div className="favorites-page">
       <h2 style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -27,6 +27,8 @@ const Favorites = ({ favorites, onPlay, currentTrack, isPlaying, toggleFavorite,
               isCurrent={currentTrack?.id === track.id}
               toggleFavorite={toggleFavorite}
               isFavorite={isFavorite(track.id)}
+              playlists={playlists}
+              addToPlaylist={addToPlaylist}
             />
           ))}
         </div>

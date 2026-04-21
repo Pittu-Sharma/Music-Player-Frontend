@@ -30,7 +30,10 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('pittu_user', JSON.stringify(data.user));
       return { success: true };
     } catch (error) {
-      return { success: false, message: error.response?.data?.message || 'Login failed' };
+      if (!error.response) {
+        return { success: false, message: 'Cannot connect to server. Make sure the backend is running.' };
+      }
+      return { success: false, message: error.response.data?.message || 'Login failed' };
     }
   };
 
@@ -42,7 +45,10 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('pittu_user', JSON.stringify(data.user));
       return { success: true };
     } catch (error) {
-      return { success: false, message: error.response?.data?.message || 'Registration failed' };
+      if (!error.response) {
+        return { success: false, message: 'Cannot connect to server. Make sure the backend is running.' };
+      }
+      return { success: false, message: error.response.data?.message || 'Registration failed' };
     }
   };
 

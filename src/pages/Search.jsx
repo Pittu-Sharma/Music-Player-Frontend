@@ -4,7 +4,7 @@ import { Search as SearchIcon, Music } from 'lucide-react';
 import { motion } from 'framer-motion';
 import SongCard from '../components/SongCard';
 
-const Search = ({ query, onPlay, currentTrack, isPlaying, toggleFavorite, isFavorite }) => {
+const Search = ({ query, onPlay, currentTrack, isPlaying, toggleFavorite, isFavorite, playlists, addToPlaylist }) => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -59,6 +59,8 @@ const Search = ({ query, onPlay, currentTrack, isPlaying, toggleFavorite, isFavo
               isCurrent={currentTrack?.id === track.id}
               toggleFavorite={toggleFavorite}
               isFavorite={isFavorite(track.id)}
+              playlists={playlists}
+              addToPlaylist={addToPlaylist}
             />
           ))}
         </div>

@@ -4,7 +4,7 @@ import { Music } from 'lucide-react';
 import { motion } from 'framer-motion';
 import SongCard from '../components/SongCard';
 
-const Browse = ({ onPlay, currentTrack, isPlaying, toggleFavorite, isFavorite }) => {
+const Browse = ({ onPlay, currentTrack, isPlaying, toggleFavorite, isFavorite, playlists, addToPlaylist }) => {
   const [tracks, setTracks] = useState([]);
   const [activeGenre, setActiveGenre] = useState('bollywood');
   const [loading, setLoading] = useState(false);
@@ -131,6 +131,8 @@ const Browse = ({ onPlay, currentTrack, isPlaying, toggleFavorite, isFavorite })
               isCurrent={currentTrack?.id === track.id}
               toggleFavorite={toggleFavorite}
               isFavorite={isFavorite(track.id)}
+              playlists={playlists}
+              addToPlaylist={addToPlaylist}
             />
           ))}
         </div>

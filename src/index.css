@@ -117,3 +117,46 @@ h1, h2, h3 {
   background: linear-gradient(var(--accent-purple), var(--accent-cyan));
   border-radius: 10px;
 }
+
+.hover-glow:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: var(--accent-cyan) !important;
+  box-shadow: 0 0 15px rgba(0, 247, 255, 0.2);
+}
+
+.playlist-button:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.sidebar-link:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: white !important;
+}
+
+/* Premium Loader Animation */
+.loader-orbit {
+  width: 60px;
+  height: 60px;
+  border: 2px solid transparent;
+  border-top-color: var(--accent-purple);
+  border-bottom-color: var(--accent-cyan);
+  border-radius: 50%;
+  animation: orbit 1s cubic-bezier(0.5, 0.1, 0.4, 0.9) infinite;
+  position: relative;
+}
+
+.loader-orbit::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 2px solid transparent;
+  border-left-color: var(--accent-pink);
+  border-right-color: var(--accent-purple);
+  border-radius: 50%;
+  animation: orbit 2s linear infinite reverse;
+}
+
+@keyframes orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
