@@ -12,14 +12,20 @@ const useFavorites = () => {
   // Fetch from backend if logged in
   useEffect(() => {
     const fetchBackendFavorites = async () => {
-      if (token) {
+      // Stricter check: JWT tokens are always long. Prevents "null", "undefined", or empty string calls.
+      if (token && typeof token === 'string' && token.length > 20) {
         try {
           const { data } = await axios.get('http://localhost:5000/api/favorites', {
             headers: { Authorization: `Bearer ${token}` }
           });
-          setFavorites(data.favorites); // Backend returns full objects now
+          if (data && data.favorites) {
+            setFavorites(data.favorites);
+          }
         } catch (error) {
-          console.error('Error fetching favorites from backend:', error.message);
+          // Only log error if it's not a 401 (to keep console clean for non-logged in users)
+          if (error.response?.status !== 401) {
+            console.error('Error fetching favorites from backend:', error.message);
+          }
         }
       }
     };

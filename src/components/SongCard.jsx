@@ -321,10 +321,12 @@ const SongCard = ({ track, onPlay, isPlaying, isCurrent, toggleFavorite, isFavor
       <div style={{ position: 'relative', zIndex: 1 }}>
         <h3 className={isCurrent ? "neon-text" : ""} style={{ 
           fontSize: '0.95rem', 
-          whiteSpace: 'nowrap', 
+          display: '-webkit-box',
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: 'vertical',
           overflow: 'hidden', 
-          textOverflow: 'ellipsis',
           marginBottom: '6px',
+          lineHeight: '1.2',
           color: isCurrent ? 'var(--accent-cyan)' : 'white'
         }}>
           {track.title}

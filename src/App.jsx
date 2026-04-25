@@ -14,7 +14,8 @@ import useFavorites from './hooks/useFavorites';
 import usePlaylists from './hooks/usePlaylists';
 import Playlist from './pages/Playlist';
 import Cartoons from './pages/Cartoons';
-import Anime from './pages/Anime';
+import AiMood from './pages/AiMood';
+import AiCreator from './pages/AiCreator';
 
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
@@ -176,7 +177,8 @@ const App = () => {
               <Route path="/library" element={<Library favorites={favorites} {...commonProps} />} />
               <Route path="/playlist/:id" element={<Playlist {...commonProps} />} />
               <Route path="/cartoons" element={<Cartoons {...commonProps} />} />
-              <Route path="/anime" element={<Anime {...commonProps} />} />
+              <Route path="/ai-mood" element={<AiMood {...commonProps} />} />
+              <Route path="/ai-creator" element={<AiCreator />} />
 
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Home, Compass, Library, Heart, Search, Settings, Music, Plus, Tv, Zap, LogIn } from 'lucide-react';
+import { Home, Compass, Library, Heart, Search, Settings, Music, Plus, Tv, Sparkles, Wand2, ChevronRight } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
@@ -11,10 +11,19 @@ const Sidebar = ({ playlists = [], createPlaylist }) => {
   const { token } = useAuth();
   const { showToast } = useToast();
 
-  // Inline playlist name modal state
   const [showNameInput, setShowNameInput] = useState(false);
   const [playlistName, setPlaylistName] = useState('');
   const [creating, setCreating] = useState(false);
+
+  const menuItems = [
+    { icon: <Home size={22} />, label: 'Home', path: '/', color: '#00f7ff', shadow: 'rgba(0, 247, 255, 0.5)' },
+    { icon: <Compass size={22} />, label: 'Browse', path: '/browse', color: '#9d00ff', shadow: 'rgba(157, 0, 255, 0.5)' },
+    { icon: <Tv size={22} />, label: 'Cartoon', path: '/cartoons', color: '#ff00c1', shadow: 'rgba(255, 0, 193, 0.5)' },
+    { icon: <Library size={22} />, label: 'Library', path: '/library', color: '#00d4ff', shadow: 'rgba(0, 212, 255, 0.5)' },
+    { icon: <Search size={22} />, label: 'Search', path: '/search', color: '#fffb00', shadow: 'rgba(255, 251, 0, 0.5)' },
+    { icon: <Sparkles size={22} />, label: 'AI Mood', path: '/ai-mood', color: '#00ff88', shadow: 'rgba(0, 255, 136, 0.5)' },
+    { icon: <Wand2 size={22} />, label: 'AI Creator', path: '/ai-creator', color: '#ff4d4d', shadow: 'rgba(255, 77, 77, 0.5)' },
+  ];
 
   const handleCreatePlaylist = () => {
     if (!token) {
@@ -33,296 +42,306 @@ const Sidebar = ({ playlists = [], createPlaylist }) => {
       await createPlaylist(name);
       showToast(`Playlist "${name}" created!`, 'success');
       setShowNameInput(false);
-      setPlaylistName('');
     } catch (err) {
-      showToast('Failed to create playlist. Try again.', 'error');
+      showToast('Failed to create playlist.', 'error');
     } finally {
       setCreating(false);
     }
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') handleConfirmCreate();
-    if (e.key === 'Escape') setShowNameInput(false);
-  };
+  const SidebarItem = ({ item, isActive }) => (
+    <li style={{ marginBottom: '12px', position: 'relative' }}>
+      <Link
+        to={item.path}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '20px',
+          padding: '14px 22px',
+          borderRadius: '24px',
+          textDecoration: 'none',
+          transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+          background: isActive 
+            ? `linear-gradient(90deg, ${item.color}22 0%, transparent 100%)` 
+            : 'rgba(255, 255, 255, 0.04)',
+          border: `1px solid ${isActive ? item.color + '66' : 'rgba(255, 255, 255, 0.08)'}`,
+          boxShadow: isActive ? `0 10px 35px -10px ${item.shadow}` : 'none'
+        }}
+        className="sidebar-item-premium group"
+      >
+        <motion.div 
+          whileHover={{ scale: 1.15, rotate: [0, -10, 10, 0] }}
+          animate={isActive ? { 
+            boxShadow: [`0 0 15px ${item.color}66`, `0 0 35px ${item.color}aa`, `0 0 15px ${item.color}66`],
+            y: [0, -3, 0]
+          } : {}}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          style={{
+            width: '44px',
+            height: '44px',
+            borderRadius: '16px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'relative',
+            background: isActive 
+              ? `linear-gradient(135deg, ${item.color}, #ffffff)` 
+              : `linear-gradient(135deg, ${item.color}33, rgba(255, 255, 255, 0.05))`,
+            border: `1px solid ${isActive ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.1)'}`,
+            overflow: 'hidden',
+            flexShrink: 0
+          }}
+        >
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.4) 50%, transparent 70%)',
+            backgroundSize: '200% 200%',
+            animation: 'hologram-shimmer 3s infinite linear'
+          }} />
+          
+          <span style={{ 
+            color: isActive ? '#03030f' : item.color,
+            zIndex: 1,
+            filter: isActive ? 'none' : `drop-shadow(0 0 10px ${item.color}aa)`,
+            display: 'flex',
+            alignItems: 'center'
+          }}>
+            {item.icon}
+          </span>
+        </motion.div>
 
-  const menuItems = [
-    { icon: <Home size={20} />, label: 'Home', path: '/' },
-    { icon: <Compass size={20} />, label: 'Browse', path: '/browse' },
-    { icon: <Tv size={20} />, label: 'Cartoon', path: '/cartoons' },
-    { icon: <Zap size={20} />, label: 'Anime', path: '/anime' },
-    { icon: <Library size={20} />, label: 'Library', path: '/library' },
-    { icon: <Search size={20} />, label: 'Search', path: '/search' },
-  ];
+        <div style={{ flex: 1 }}>
+          <span style={{ 
+            fontSize: '1.1rem', 
+            fontWeight: '900',
+            letterSpacing: '0.8px',
+            color: 'white',
+            transition: 'all 0.3s ease',
+            textShadow: isActive ? `0 0 20px ${item.color}aa` : 'none',
+            opacity: isActive ? 1 : 0.75
+          }}>
+            {item.label}
+          </span>
+        </div>
 
-  const playlistItems = [
-    { icon: <Heart size={18} />, label: 'Liked Songs', path: '/favorites', color: '#ff4b91' },
-    ...playlists.map(p => ({
-      icon: <Music size={18} />,
-      label: p.name,
-      path: `/playlist/${p._id}`,
-      color: 'var(--accent-cyan)'
-    }))
-  ];
+        {isActive && (
+          <motion.div
+            animate={{ scale: [1, 1.6, 1], opacity: [0.6, 1, 0.6] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            style={{ 
+              width: '10px', 
+              height: '10px', 
+              borderRadius: '50%', 
+              background: item.color,
+              boxShadow: `0 0 20px ${item.color}`
+            }}
+          />
+        )}
+      </Link>
+    </li>
+  );
+
+  const PlaylistCard = ({ item, isActive }) => (
+    <li style={{ marginBottom: '12px', position: 'relative' }}>
+      <Link
+        to={item.path}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '14px',
+          padding: '12px 14px',
+          borderRadius: '20px',
+          textDecoration: 'none',
+          transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+          background: isActive 
+            ? 'rgba(255, 0, 193, 0.25)' 
+            : 'rgba(255, 255, 255, 0.03)',
+          border: isActive 
+            ? '1px solid rgba(255, 0, 193, 0.5)' 
+            : '1px solid rgba(255, 255, 255, 0.05)',
+          boxShadow: isActive ? '0 10px 30px rgba(255, 0, 193, 0.2)' : 'none',
+          overflow: 'hidden',
+          position: 'relative'
+        }}
+        className="playlist-card-premium group"
+      >
+        {isActive && (
+          <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
+            {[...Array(8)].map((_, i) => (
+              <motion.div
+                key={i}
+                animate={{
+                  opacity: [0, 0.9, 0],
+                  scale: [0.5, 1.4, 0.5],
+                  x: [Math.random() * 250, Math.random() * 250],
+                  y: [Math.random() * 80, Math.random() * 80],
+                }}
+                transition={{
+                  duration: 2 + Math.random() * 3,
+                  repeat: Infinity,
+                  delay: Math.random() * 2,
+                }}
+                style={{
+                  position: 'absolute',
+                  width: '3px',
+                  height: '3px',
+                  borderRadius: '50%',
+                  background: ['#ff00c1', '#9d00ff', '#00f7ff', '#fffb00'][i % 4],
+                  boxShadow: `0 0 10px ${['#ff00c1', '#9d00ff', '#00f7ff', '#fffb00'][i % 4]}`,
+                }}
+              />
+            ))}
+          </div>
+        )}
+
+        <div style={{ 
+          width: '44px', 
+          height: '44px', 
+          borderRadius: '14px', 
+          background: 'linear-gradient(135deg, #ff00c1, #9d00ff)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: '0 8px 20px rgba(255, 0, 193, 0.5)',
+          flexShrink: 0,
+          position: 'relative',
+          zIndex: 1
+        }}>
+          <span style={{ color: 'white', display: 'flex', alignItems: 'center', filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.6))' }}>
+            {item.icon}
+          </span>
+        </div>
+
+        <div style={{ overflow: 'hidden', flex: 1, position: 'relative', zIndex: 1 }}>
+          <p style={{ 
+            color: 'white', 
+            fontWeight: '900', 
+            fontSize: '1rem', 
+            marginBottom: '2px',
+            whiteSpace: 'nowrap'
+          }}>
+            {item.label}
+          </p>
+          <p style={{ 
+            color: 'rgba(255,255,255,0.6)', 
+            fontSize: '0.7rem',
+            letterSpacing: '1px',
+            textTransform: 'uppercase',
+            fontWeight: '800'
+          }}>
+            {item.subtitle || 'Your Collection'}
+          </p>
+        </div>
+
+        <ChevronRight size={16} color="rgba(255,255,255,0.4)" style={{ marginLeft: 'auto', position: 'relative', zIndex: 1 }} />
+      </Link>
+    </li>
+  );
 
   return (
     <div className="glass-panel sidebar" style={{
-      width: '280px',
+      width: '320px',
       margin: '24px',
       height: 'calc(100vh - 48px)',
       display: 'flex',
       flexDirection: 'column',
-      padding: '40px 24px',
+      padding: '35px 20px',
       position: 'relative',
-      zIndex: 10
+      zIndex: 10,
+      background: 'linear-gradient(135deg, rgba(8, 8, 28, 0.6), rgba(157, 0, 255, 0.15))',
+      border: '1px solid rgba(255, 255, 255, 0.1)',
+      borderRadius: '35px',
+      boxShadow: '0 30px 70px rgba(0, 0, 0, 0.6), 0 0 30px rgba(157, 0, 255, 0.1)',
+      backdropFilter: 'blur(25px)'
     }}>
-      <div style={{ marginBottom: '50px', paddingLeft: '12px' }}>
-        <h2 className="neon-text" style={{ fontSize: '1.4rem', color: 'var(--accent-cyan)', letterSpacing: '4px' }}>
+      <div style={{ marginBottom: '45px', paddingLeft: '16px' }}>
+        <h2 style={{ 
+          fontSize: '1.8rem', 
+          letterSpacing: '12px',
+          fontFamily: 'Orbitron',
+          fontWeight: '900',
+          background: 'linear-gradient(to right, #00f7ff, #9d00ff, #ff00c1)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          filter: 'drop-shadow(0 0 15px rgba(0, 247, 255, 0.4))'
+        }}>
           PITTU
         </h2>
       </div>
 
-      <nav style={{ flex: 1, overflowY: 'auto' }}>
-        <ul style={{ listStyle: 'none' }}>
-          {menuItems.map((item) => {
-            const isActive = location.pathname === item.path || (item.path === '/' && location.pathname === '/browse');
-            return (
-              <li key={item.label} style={{ marginBottom: '12px', position: 'relative' }}>
-                {isActive && (
-                  <motion.div
-                    layoutId="active-pill"
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      background: 'linear-gradient(90deg, rgba(157, 0, 255, 0.2), rgba(255, 0, 193, 0.15))',
-                      boxShadow: '0 0 20px rgba(157, 0, 255, 0.3)',
-                      borderRadius: '12px',
-                      zIndex: -1,
-                      border: '1px solid rgba(157, 0, 255, 0.3)'
-                    }}
-                  />
-                )}
-                <Link
-                  to={item.path}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '16px',
-                    color: isActive ? 'white' : 'var(--text-secondary)',
-                    textDecoration: 'none',
-                    padding: '14px 16px',
-                    borderRadius: '12px',
-                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                    background: 'transparent',
-                    fontWeight: isActive ? '600' : '400',
-                    position: 'relative',
-                    zIndex: 1
-                  }}
-                  className="sidebar-link"
-                >
-                  <span style={{ color: isActive ? 'var(--accent-cyan)' : 'inherit' }}>{item.icon}</span>
-                  <span style={{ fontSize: '1rem' }}>{item.label}</span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+      <nav style={{ flex: 1, overflowY: 'auto' }} className="custom-scrollbar">
+        <div style={{ marginBottom: '40px' }}>
+          <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: '0.65rem', fontWeight: '900', letterSpacing: '4px', marginBottom: '20px', paddingLeft: '20px', textTransform: 'uppercase' }}>Library</p>
+          <ul style={{ listStyle: 'none' }}>
+            {menuItems.map((item) => (
+              <SidebarItem 
+                key={item.label} 
+                item={item} 
+                isActive={location.pathname === item.path || (item.path === '/' && location.pathname === '/browse')} 
+              />
+            ))}
+          </ul>
+        </div>
 
-        {/* Playlists Section */}
-        <div style={{ marginTop: '40px' }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: '16px',
-            padding: '0 16px'
-          }}>
-            <h3 style={{
-              fontSize: '0.8rem',
-              textTransform: 'uppercase',
-              letterSpacing: '1.5px',
-              color: 'var(--text-secondary)',
-              fontWeight: '600'
-            }}>
-              Your Playlists
-            </h3>
-            <button
+        <div style={{ marginBottom: '20px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', paddingLeft: '20px', paddingRight: '10px' }}>
+            <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: '0.65rem', fontWeight: '900', letterSpacing: '4px', textTransform: 'uppercase' }}>Playlists</p>
+            <button 
               onClick={handleCreatePlaylist}
-              title="Create playlist"
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: 'var(--text-secondary)',
-                cursor: 'pointer',
-                padding: '4px',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                transition: 'all 0.2s ease'
-              }}
-              className="hover-glow"
+              style={{ background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', transition: 'all 0.3s' }}
+              className="hover:text-white hover:scale-125"
             >
-              <Plus size={16} />
+              <Plus size={22} />
             </button>
           </div>
 
-          {/* Inline create playlist input */}
           <AnimatePresence>
             {showNameInput && (
               <motion.div
-                initial={{ opacity: 0, height: 0, marginBottom: 0 }}
-                animate={{ opacity: 1, height: 'auto', marginBottom: 12 }}
-                exit={{ opacity: 0, height: 0, marginBottom: 0 }}
-                transition={{ duration: 0.25, ease: 'easeInOut' }}
-                style={{ overflow: 'hidden', padding: '0 4px' }}
+                initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                style={{ padding: '0 10px', marginBottom: '20px' }}
               >
-                <div style={{
-                  background: 'rgba(255,255,255,0.05)',
-                  border: '1px solid rgba(0, 212, 255, 0.3)',
-                  borderRadius: '12px',
-                  padding: '10px 14px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  boxShadow: '0 0 16px rgba(0, 212, 255, 0.1)',
-                }}>
-                  <Music size={14} color="var(--accent-cyan)" style={{ flexShrink: 0 }} />
+                <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255, 0, 193, 0.5)', borderRadius: '15px', padding: '12px' }}>
                   <input
                     autoFocus
-                    type="text"
-                    placeholder="Playlist name…"
+                    placeholder="Collection Name"
                     value={playlistName}
-                    onChange={e => setPlaylistName(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    maxLength={60}
-                    style={{
-                      background: 'transparent',
-                      border: 'none',
-                      outline: 'none',
-                      color: 'white',
-                      fontFamily: 'Outfit, sans-serif',
-                      fontSize: '0.87rem',
-                      flex: 1,
-                      minWidth: 0,
+                    onChange={(e) => setPlaylistName(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') handleConfirmCreate();
+                      if (e.key === 'Escape') setShowNameInput(false);
                     }}
+                    style={{ background: 'transparent', border: 'none', outline: 'none', color: 'white', fontSize: '0.9rem', width: '100%', fontWeight: '600' }}
                   />
-                  <button
-                    onClick={handleConfirmCreate}
-                    disabled={!playlistName.trim() || creating}
-                    style={{
-                      background: playlistName.trim() ? 'var(--accent-cyan)' : 'rgba(255,255,255,0.1)',
-                      border: 'none',
-                      borderRadius: '8px',
-                      color: playlistName.trim() ? '#000' : 'rgba(255,255,255,0.3)',
-                      cursor: playlistName.trim() ? 'pointer' : 'default',
-                      padding: '4px 10px',
-                      fontSize: '0.78rem',
-                      fontFamily: 'Outfit, sans-serif',
-                      fontWeight: '600',
-                      transition: 'all 0.2s ease',
-                      flexShrink: 0,
-                    }}
-                  >
-                    {creating ? '…' : 'Create'}
-                  </button>
-                  <button
-                    onClick={() => setShowNameInput(false)}
-                    style={{
-                      background: 'transparent',
-                      border: 'none',
-                      color: 'rgba(255,255,255,0.3)',
-                      cursor: 'pointer',
-                      padding: '2px',
-                      fontSize: '0.8rem',
-                      lineHeight: 1,
-                      flexShrink: 0,
-                    }}
-                  >✕</button>
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
 
           <ul style={{ listStyle: 'none' }}>
-            {playlistItems.map((item) => {
-              const isActive = location.pathname === item.path;
-              return (
-                <li key={item.label} style={{ marginBottom: '8px' }}>
-                  <Link
-                    to={item.path}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '12px',
-                      color: isActive ? 'white' : 'var(--text-secondary)',
-                      textDecoration: 'none',
-                      padding: '10px 16px',
-                      borderRadius: '10px',
-                      transition: 'all 0.3s ease',
-                      background: isActive ? 'rgba(255, 255, 255, 0.05)' : 'transparent',
-                      fontSize: '0.95rem'
-                    }}
-                    className="sidebar-link"
-                  >
-                    <span style={{
-                      color: isActive ? item.color : 'inherit',
-                      display: 'flex',
-                      alignItems: 'center'
-                    }}>
-                      {item.icon}
-                    </span>
-                    <span>{item.label}</span>
-                  </Link>
-                </li>
-              );
-            })}
+            <PlaylistCard 
+              item={{ icon: <Heart size={22} />, label: 'Liked Songs', subtitle: 'Favorite Tracks', path: '/favorites' }}
+              isActive={location.pathname === '/favorites'}
+            />
+            {playlists.map((p) => (
+              <PlaylistCard 
+                key={p._id}
+                item={{ icon: <Music size={22} />, label: p.name, subtitle: 'Your Collection', path: `/playlist/${p._id}` }}
+                isActive={location.pathname === `/playlist/${p._id}`}
+              />
+            ))}
           </ul>
-
-          {/* Not logged in nudge */}
-          {!token && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              style={{
-                margin: '16px 4px 0',
-                padding: '12px 14px',
-                borderRadius: '12px',
-                background: 'rgba(0, 212, 255, 0.06)',
-                border: '1px solid rgba(0, 212, 255, 0.2)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                cursor: 'pointer',
-              }}
-              onClick={() => navigate('/login')}
-            >
-              <LogIn size={15} color="var(--accent-cyan)" />
-              <span style={{
-                fontSize: '0.78rem',
-                color: 'var(--text-secondary)',
-                lineHeight: '1.4',
-                fontFamily: 'Outfit, sans-serif',
-              }}>
-                <span style={{ color: 'var(--accent-cyan)', fontWeight: '600' }}>Login</span> to create &amp; manage playlists
-              </span>
-            </motion.div>
-          )}
         </div>
       </nav>
 
-      <div style={{ borderTop: '1px solid var(--glass-border)', paddingTop: '20px' }}>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-          color: 'var(--text-secondary)',
-          cursor: 'pointer',
-          paddingLeft: '15px'
-        }}>
-          <Settings size={18} />
-          <span>Settings</span>
-        </div>
+      <div style={{ paddingTop: '20px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+        <SidebarItem 
+          item={{ icon: <Settings size={22} />, label: 'Settings', path: '/settings', color: '#ffffff', shadow: 'rgba(255,255,255,0.3)' }}
+          isActive={location.pathname === '/settings'}
+        />
       </div>
     </div>
   );

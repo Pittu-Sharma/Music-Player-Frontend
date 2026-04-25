@@ -8,15 +8,21 @@ const usePlaylists = () => {
   const [loading, setLoading] = useState(false);
 
   const fetchPlaylists = async () => {
-    if (!token) return;
+    // JWT tokens are always long. This avoids calls with "null", "undefined", or empty strings.
+    if (!token || typeof token !== 'string' || token.length < 20) return;
     setLoading(true);
     try {
       const { data } = await axios.get('http://localhost:5000/api/playlists', {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setPlaylists(data.playlists);
+      if (data && data.playlists) {
+        setPlaylists(data.playlists);
+      }
     } catch (error) {
-      console.error('Error fetching playlists:', error.message);
+      // Only log error if it's not a 401
+      if (error.response?.status !== 401) {
+        console.error('Error fetching playlists:', error.message);
+      }
     } finally {
       setLoading(false);
     }
