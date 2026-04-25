@@ -16,6 +16,7 @@ import Playlist from './pages/Playlist';
 import Cartoons from './pages/Cartoons';
 import AiMood from './pages/AiMood';
 import AiCreator from './pages/AiCreator';
+import MobileNav from './components/MobileNav';
 
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
@@ -92,21 +93,12 @@ const App = () => {
   };
 
   return (
-    <div className="app-container" style={{
-      display: 'flex',
-      height: '100vh',
-      overflow: 'hidden',
-      position: 'relative'
-    }}>
+    <div className="app-container">
       <NebulaBackground />
       <Sidebar playlists={playlists} createPlaylist={createPlaylist} />
+      <MobileNav />
       
-      <main style={{
-        flex: 1,
-        overflowY: 'auto',
-        padding: '24px 40px 160px 40px',
-        position: 'relative'
-      }}>
+      <main className="main-content">
         <div className="header" style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -135,10 +127,10 @@ const App = () => {
             style={{
               padding: '12px 24px',
               borderRadius: '30px',
-              width: '450px',
               display: 'flex',
               alignItems: 'center',
-              gap: '15px'
+              gap: '15px',
+              maxWidth: '450px'
             }}
           >
             <SearchIcon size={20} color="var(--accent-cyan)" />

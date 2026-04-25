@@ -129,15 +129,6 @@ const Player = ({ track, isPlaying, setIsPlaying }) => {
       animate={{ y: 0 }}
       className="player-bar glass-panel"
       style={{
-        position: 'fixed',
-        bottom: '24px',
-        left: '24px',
-        right: '24px',
-        height: '110px',
-        display: 'flex',
-        alignItems: 'center',
-        padding: '0 40px',
-        zIndex: 1000,
         background: 'rgba(5, 5, 20, 0.75)',
         backdropFilter: 'blur(40px)',
         border: '1px solid var(--glass-border)',
@@ -184,7 +175,7 @@ const Player = ({ track, isPlaying, setIsPlaying }) => {
 
 
       {/* Track Info */}
-      <div style={{ display: 'flex', alignItems: 'center', width: '30%', gap: '20px' }}>
+      <div className="track-info" style={{ display: 'flex', alignItems: 'center', flex: 1, minWidth: '200px', gap: '20px' }}>
         <div style={{ position: 'relative' }}>
           <motion.div 
             animate={{ 
@@ -218,7 +209,7 @@ const Player = ({ track, isPlaying, setIsPlaying }) => {
       </div>
 
       {/* Controls & Progress */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px' }}>
+      <div className="controls-wrapper" style={{ flex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
           <Shuffle size={18} color="var(--text-secondary)" cursor="pointer" className="hover-glow" />
           <SkipBack size={26} color="white" cursor="pointer" />
@@ -285,7 +276,7 @@ const Player = ({ track, isPlaying, setIsPlaying }) => {
       </div>
 
       {/* Volume & Details */}
-      <div style={{ width: '30%', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '20px' }}>
+      <div className="volume-control" style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '20px', minWidth: '150px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div onClick={() => setIsMuted(!isMuted)} style={{ cursor: 'pointer' }}>
             {isMuted || volume === 0 ? <VolumeX size={20} color="var(--accent-pink)" /> : <Volume2 size={20} color="var(--accent-cyan)" />}

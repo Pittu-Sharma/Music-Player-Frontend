@@ -241,14 +241,6 @@ const Sidebar = ({ playlists = [], createPlaylist }) => {
 
   return (
     <div className="glass-panel sidebar" style={{
-      width: '320px',
-      margin: '24px',
-      height: 'calc(100vh - 48px)',
-      display: 'flex',
-      flexDirection: 'column',
-      padding: '35px 20px',
-      position: 'relative',
-      zIndex: 10,
       background: 'linear-gradient(135deg, rgba(8, 8, 28, 0.6), rgba(157, 0, 255, 0.15))',
       border: '1px solid rgba(255, 255, 255, 0.1)',
       borderRadius: '35px',
