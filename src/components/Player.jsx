@@ -4,7 +4,7 @@ import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Maximize2, Repeat
 import { motion, AnimatePresence } from 'framer-motion';
 
 
-const Player = ({ track, isPlaying, setIsPlaying }) => {
+const Player = ({ track, isPlaying, setIsPlaying, onNext, onPrev }) => {
   const audioRef = useRef(null);
   const [progress, setProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
@@ -140,7 +140,7 @@ const Player = ({ track, isPlaying, setIsPlaying }) => {
         src={fullStreamUrl || ''}
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleTimeUpdate}
-        onEnded={() => setIsPlaying(false)}
+        onEnded={onNext || (() => setIsPlaying(false))}
       />
 
       {/* Resolution Indicator */}
@@ -212,7 +212,7 @@ const Player = ({ track, isPlaying, setIsPlaying }) => {
       <div className="controls-wrapper" style={{ flex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
           <Shuffle size={18} color="var(--text-secondary)" cursor="pointer" className="hover-glow" />
-          <SkipBack size={26} color="white" cursor="pointer" />
+          <SkipBack size={26} color="white" cursor="pointer" onClick={onPrev} />
           
           <motion.div 
             whileHover={{ scale: 1.1, boxShadow: '0 0 25px var(--accent-cyan)' }}
@@ -234,7 +234,7 @@ const Player = ({ track, isPlaying, setIsPlaying }) => {
             {isPlaying ? <Pause size={28} fill="currentColor" /> : <Play size={28} fill="currentColor" style={{ marginLeft: '4px' }} />}
           </motion.div>
 
-          <SkipForward size={26} color="white" cursor="pointer" />
+          <SkipForward size={26} color="white" cursor="pointer" onClick={onNext} />
           <Repeat size={18} color="var(--text-secondary)" cursor="pointer" className="hover-glow" />
         </div>
 

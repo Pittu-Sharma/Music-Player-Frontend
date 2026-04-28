@@ -58,7 +58,7 @@ const Library = ({ favorites, onPlay, currentTrack, isPlaying, toggleFavorite, i
             <SongCard
               key={track.id}
               track={track}
-              onPlay={onPlay}
+              onPlay={(t) => onPlay(t, favorites.slice(0, 8))}
               isPlaying={isPlaying}
               isCurrent={currentTrack?.id === track.id}
               toggleFavorite={toggleFavorite}

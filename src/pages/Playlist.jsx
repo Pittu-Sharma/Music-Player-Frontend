@@ -55,7 +55,7 @@ const Playlist = ({ playlists, onPlay, currentTrack, isPlaying, toggleFavorite, 
             <button 
               className="glow-btn"
               style={{ padding: '12px 32px', borderRadius: '30px', display: 'flex', alignItems: 'center', gap: '8px' }}
-              onClick={() => playlist.tracks.length > 0 && onPlay(playlist.tracks[0])}
+              onClick={() => playlist.tracks.length > 0 && onPlay(playlist.tracks[0], playlist.tracks)}
             >
               <Play size={20} fill="currentColor" /> Play All
             </button>
@@ -94,7 +94,7 @@ const Playlist = ({ playlists, onPlay, currentTrack, isPlaying, toggleFavorite, 
             <div key={track.id} style={{ position: 'relative' }}>
                <SongCard
                 track={track}
-                onPlay={onPlay}
+                onPlay={(t) => onPlay(t, playlist.tracks)}
                 isPlaying={isPlaying}
                 isCurrent={currentTrack?.id === track.id}
                 toggleFavorite={toggleFavorite}

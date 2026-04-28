@@ -126,7 +126,7 @@ const Browse = ({ onPlay, currentTrack, isPlaying, toggleFavorite, isFavorite, p
             <SongCard
               key={track.id}
               track={track}
-              onPlay={onPlay}
+              onPlay={(t) => onPlay(t, tracks)}
               isPlaying={isPlaying}
               isCurrent={currentTrack?.id === track.id}
               toggleFavorite={toggleFavorite}

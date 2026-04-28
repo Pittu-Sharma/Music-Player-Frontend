@@ -316,7 +316,7 @@ const AiMood = ({ onPlay, currentTrack, isPlaying, toggleFavorite, isFavorite, p
                 >
                   <SongCard
                     track={song}
-                    onPlay={() => onPlay(song)}
+                    onPlay={() => onPlay(song, results.songs)}
                     isCurrent={currentTrack?.id === song.id}
                     isPlaying={isPlaying}
                     isFavorite={isFavorite(song.id)}

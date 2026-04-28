@@ -60,15 +60,47 @@ const NebulaBackground = () => (
 const App = () => {
   const [currentTrack, setCurrentTrack] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [trackQueue, setTrackQueue] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
   const { favorites, toggleFavorite, isFavorite } = useFavorites();
   const { playlists, createPlaylist, addToPlaylist, removeFromPlaylist, deletePlaylist } = usePlaylists();
 
-  const playTrack = (track) => {
+  const playTrack = (track, queue = []) => {
     setCurrentTrack(track);
     setIsPlaying(true);
+    if (queue.length > 0) {
+      setTrackQueue(queue);
+    } else if (trackQueue.length === 0) {
+      setTrackQueue([track]);
+    }
+  };
+
+  const handleNext = () => {
+    if (!currentTrack || trackQueue.length === 0) return;
+    const currentIndex = trackQueue.findIndex(t => t.id === currentTrack.id);
+    if (currentIndex !== -1 && currentIndex < trackQueue.length - 1) {
+      setCurrentTrack(trackQueue[currentIndex + 1]);
+      setIsPlaying(true);
+    } else if (currentIndex === trackQueue.length - 1) {
+      // Loop back to start if at end
+      setCurrentTrack(trackQueue[0]);
+      setIsPlaying(true);
+    }
+  };
+
+  const handlePrev = () => {
+    if (!currentTrack || trackQueue.length === 0) return;
+    const currentIndex = trackQueue.findIndex(t => t.id === currentTrack.id);
+    if (currentIndex > 0) {
+      setCurrentTrack(trackQueue[currentIndex - 1]);
+      setIsPlaying(true);
+    } else if (currentIndex === 0) {
+      // Loop back to end if at start
+      setCurrentTrack(trackQueue[trackQueue.length - 1]);
+      setIsPlaying(true);
+    }
   };
 
   const handleSearchChange = (e) => {
@@ -118,7 +150,7 @@ const App = () => {
             style={{ fontSize: '1.6rem', cursor: 'pointer' }} 
             onClick={() => navigate('/')}
           >
-            PITTU PLAYER
+           AI Music Player
           </motion.h1>
           <motion.div 
             initial={{ opacity: 0, x: 20 }}
@@ -183,6 +215,8 @@ const App = () => {
         track={currentTrack} 
         isPlaying={isPlaying} 
         setIsPlaying={setIsPlaying} 
+        onNext={handleNext}
+        onPrev={handlePrev}
       />
     </div>
   );

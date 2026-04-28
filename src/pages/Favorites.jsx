@@ -22,7 +22,7 @@ const Favorites = ({ favorites, onPlay, currentTrack, isPlaying, toggleFavorite,
             <SongCard
               key={track.id}
               track={track}
-              onPlay={onPlay}
+              onPlay={(t) => onPlay(t, favorites)}
               isPlaying={isPlaying}
               isCurrent={currentTrack?.id === track.id}
               toggleFavorite={toggleFavorite}

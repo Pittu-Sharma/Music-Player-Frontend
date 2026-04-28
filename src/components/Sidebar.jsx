@@ -330,10 +330,7 @@ const Sidebar = ({ playlists = [], createPlaylist }) => {
       </nav>
 
       <div style={{ paddingTop: '20px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-        <SidebarItem 
-          item={{ icon: <Settings size={22} />, label: 'Settings', path: '/settings', color: '#ffffff', shadow: 'rgba(255,255,255,0.3)' }}
-          isActive={location.pathname === '/settings'}
-        />
+        {/* Settings removed per user request */}
       </div>
     </div>
   );

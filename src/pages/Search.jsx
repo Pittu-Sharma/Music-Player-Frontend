@@ -54,7 +54,7 @@ const Search = ({ query, onPlay, currentTrack, isPlaying, toggleFavorite, isFavo
             <SongCard
               key={track.id}
               track={track}
-              onPlay={onPlay}
+              onPlay={(t) => onPlay(t, results)}
               isPlaying={isPlaying}
               isCurrent={currentTrack?.id === track.id}
               toggleFavorite={toggleFavorite}
