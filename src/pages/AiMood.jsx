@@ -12,14 +12,18 @@ const AiMood = ({ onPlay, currentTrack, isPlaying, toggleFavorite, isFavorite, p
   const songsPerPage = 12;
 
   const moodCards = [
-    { label: 'Happy', emoji: '😊', subtitle: 'Feel good energy', value: 'I want some happy and upbeat Bollywood songs', color: 'linear-gradient(135deg, #fce38a 0%, #f38181 100%)' },
-    { label: 'Sad', emoji: '😢', subtitle: 'Soulful melodies', value: 'I am feeling low, need some soulful sad tracks', color: 'linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%)' },
-    { label: 'Heartbreak', emoji: '💔', subtitle: 'Emotional release', value: 'Heartbroken, play some deep emotional music', color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' },
-    { label: 'Motivated', emoji: '🚀', subtitle: 'Power & Energy', value: 'Feeling energetic and ready to conquer the world', color: 'linear-gradient(135deg, #00f2fe 0%, #4facfe 100%)' },
-    { label: 'Late Night', emoji: '🌙', subtitle: 'Quiet chill vibes', value: 'Chill late night vibes with soft melodies', color: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)' },
-    { label: 'Focus', emoji: '🧠', subtitle: 'Concentrate better', value: 'Instrumental music for focus and concentration', color: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)' },
-    { label: 'Relax', emoji: '🧘', subtitle: 'Calm your mind', value: 'Relaxing ambient and soft acoustic music', color: 'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)' }
+    { label: 'Happy', emoji: '😊', subtitle: 'Feel good energy', value: 'I want some happy and upbeat Bollywood songs', color: 'linear-gradient(135deg, #fce38a 0%, #f38181 100%)', primary: '#fce38a', secondary: '#f38181' },
+    { label: 'Sad', emoji: '😢', subtitle: 'Soulful melodies', value: 'I am feeling low, need some soulful sad tracks', color: 'linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%)', primary: '#a8c0ff', secondary: '#3f2b96' },
+    { label: 'Heartbreak', emoji: '💔', subtitle: 'Emotional release', value: 'Heartbroken, play some deep emotional music', color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', primary: '#f093fb', secondary: '#f5576c' },
+    { label: 'Motivated', emoji: '🚀', subtitle: 'Power & Energy', value: 'Feeling energetic and ready to conquer the world', color: 'linear-gradient(135deg, #00f2fe 0%, #4facfe 100%)', primary: '#00f2fe', secondary: '#4facfe' },
+    { label: 'Late Night', emoji: '🌙', subtitle: 'Quiet chill vibes', value: 'Chill late night vibes with soft melodies', color: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)', primary: '#1e3c72', secondary: '#2a5298' },
+    { label: 'Focus', emoji: '🧠', subtitle: 'Concentrate better', value: 'Instrumental music for focus and concentration', color: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)', primary: '#84fab0', secondary: '#8fd3f4' },
+    { label: 'Relax', emoji: '🧘', subtitle: 'Calm your mind', value: 'Relaxing ambient and soft acoustic music', color: 'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)', primary: '#e0c3fc', secondary: '#8ec5fc' }
   ];
+
+  const activeCard = moodCards.find(c => c.value === mood);
+  const spot1Color = activeCard ? activeCard.primary : 'var(--accent-cyan)';
+  const spot2Color = activeCard ? activeCard.secondary : 'var(--accent-purple)';
 
   const handleMoodMatch = async (e) => {
     if (e && e.preventDefault) e.preventDefault();
@@ -108,8 +112,18 @@ const AiMood = ({ onPlay, currentTrack, isPlaying, toggleFavorite, isFavorite, p
       {/* Animated Mesh Background */}
       <div className="mesh-bg">
         <div className="mesh-gradient" />
-        <div className="mesh-spot" style={{ top: '20%', left: '10%', background: 'var(--accent-cyan)' }} />
-        <div className="mesh-spot" style={{ bottom: '20%', right: '10%', background: 'var(--accent-purple)' }} />
+        <motion.div 
+          animate={{ backgroundColor: spot1Color }} 
+          transition={{ duration: 1.5, ease: "easeInOut" }}
+          className="mesh-spot" 
+          style={{ top: '20%', left: '10%', opacity: 0.4 }} 
+        />
+        <motion.div 
+          animate={{ backgroundColor: spot2Color }} 
+          transition={{ duration: 1.5, ease: "easeInOut" }}
+          className="mesh-spot" 
+          style={{ bottom: '20%', right: '10%', opacity: 0.4 }} 
+        />
       </div>
       
       <div style={{ position: 'relative', zIndex: 2 }}>
