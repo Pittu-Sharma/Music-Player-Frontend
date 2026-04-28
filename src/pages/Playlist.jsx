@@ -85,11 +85,7 @@ const Playlist = ({ playlists, onPlay, currentTrack, isPlaying, toggleFavorite, 
       </div>
 
       {playlist.tracks.length > 0 ? (
-        <div className="track-grid" style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-          gap: '24px'
-        }}>
+        <div className="track-grid responsive-grid" style={{}}>
           {playlist.tracks.map((track) => (
             <div key={track.id} style={{ position: 'relative' }}>
                <SongCard

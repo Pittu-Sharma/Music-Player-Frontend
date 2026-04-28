@@ -301,10 +301,7 @@ const AiMood = ({ onPlay, currentTrack, isPlaying, toggleFavorite, isFavorite, p
               </div>
             </div>
             
-            <div className="track-grid" style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-              gap: '30px',
+            <div className="track-grid responsive-grid" style={{
               marginBottom: '40px'
             }}>
               {currentSongs.map((song, idx) => (

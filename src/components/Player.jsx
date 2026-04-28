@@ -218,6 +218,7 @@ const Player = ({ track, isPlaying, setIsPlaying, onNext, onPrev }) => {
             whileHover={{ scale: 1.1, boxShadow: '0 0 25px var(--accent-cyan)' }}
             whileTap={{ scale: 0.95 }}
             onClick={togglePlay}
+            className="play-btn-circle"
             style={{
               background: 'var(--accent-cyan)',
               borderRadius: '50%',

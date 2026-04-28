@@ -13,11 +13,7 @@ const Favorites = ({ favorites, onPlay, currentTrack, isPlaying, toggleFavorite,
       </h2>
 
       {favorites.length > 0 ? (
-        <div className="track-grid" style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-          gap: '24px'
-        }}>
+        <div className="track-grid responsive-grid" style={{}}>
           {favorites.map((track) => (
             <SongCard
               key={track.id}

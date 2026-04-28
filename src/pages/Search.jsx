@@ -45,11 +45,7 @@ const Search = ({ query, onPlay, currentTrack, isPlaying, toggleFavorite, isFavo
           </motion.div>
         </div>
       ) : results.length > 0 ? (
-        <div className="track-grid" style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-          gap: '24px'
-        }}>
+        <div className="track-grid responsive-grid" style={{}}>
           {results.map((track) => (
             <SongCard
               key={track.id}

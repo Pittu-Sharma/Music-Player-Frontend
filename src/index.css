@@ -33,6 +33,14 @@ h1, h2, h3 {
   line-height: 1.2;
 }
 
+h1 {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+}
+
+h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
 /* Nebula Background Animation */
 .nebula-wrapper {
   position: fixed;
@@ -318,6 +326,12 @@ h1, h2, h3 {
   position: relative;
 }
 
+.responsive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 24px;
+}
+
 .sidebar {
   width: 320px;
   margin: 24px;
@@ -344,7 +358,7 @@ h1, h2, h3 {
 .mobile-nav {
   display: none;
   position: fixed;
-  bottom: 110px; /* Above player */
+  bottom: 120px; /* Above player */
   left: 24px;
   right: 24px;
   height: 65px;
@@ -385,13 +399,16 @@ h1, h2, h3 {
     right: 0;
     margin: 0;
     border-radius: 0;
-    height: 90px;
-    padding: 0 20px;
+    height: 100px;
+    padding: 0 15px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
   }
 
   .mobile-nav {
     display: flex;
-    bottom: 90px;
+    bottom: 100px;
     left: 0;
     right: 0;
     border-radius: 0;
@@ -402,15 +419,19 @@ h1, h2, h3 {
   }
 
   .header {
-    flex-direction: column;
-    gap: 20px;
-    align-items: flex-start !important;
+    flex-wrap: wrap;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    gap: 15px;
+    align-items: center !important;
     margin-bottom: 30px !important;
   }
 
   .search-bar {
     width: 100% !important;
+    max-width: 100% !important;
     order: 3;
+    margin-top: 10px;
   }
 
   .hero-section {
@@ -423,18 +444,54 @@ h1, h2, h3 {
   .hero-section h1 {
     font-size: 1.8rem !important;
   }
+  
+  .responsive-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 16px;
+  }
 }
 
 @media (max-width: 480px) {
-  .player-bar .track-info {
-    display: none;
+  .player-bar {
+    height: 90px;
+    padding: 0 10px;
   }
-  
+
+  .mobile-nav {
+    bottom: 90px;
+  }
+
   .player-bar .volume-control {
-    display: none;
+    display: none !important;
+  }
+
+  .player-bar .track-info {
+    min-width: 120px !important;
+    flex: 1 !important;
+    gap: 10px !important;
+  }
+
+  .player-bar .track-info img {
+    width: 45px !important;
+    height: 45px !important;
+  }
+
+  .player-bar .track-info h4 {
+    font-size: 0.85rem !important;
   }
 
   .player-bar .controls-wrapper {
-    width: 100%;
+    flex: 1.5 !important;
+    gap: 5px !important;
+  }
+
+  .player-bar .controls-wrapper svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .player-bar .play-btn-circle {
+    width: 40px !important;
+    height: 40px !important;
   }
 }

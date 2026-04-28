@@ -117,10 +117,8 @@ const Browse = ({ onPlay, currentTrack, isPlaying, toggleFavorite, isFavorite, p
           </motion.div>
         </div>
       ) : (
-        <div className="track-grid" style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-          gap: '24px'
+        <div className="track-grid responsive-grid" style={{
+          /* inline grid styles removed for responsiveness */
         }}>
           {tracks.map((track) => (
             <SongCard

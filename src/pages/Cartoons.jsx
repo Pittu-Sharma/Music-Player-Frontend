@@ -499,10 +499,7 @@ const Cartoons = () => {
         </div>
       </header>
 
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
-        gap: '30px',
+      <div className="responsive-grid" style={{
         padding: '20px'
       }}>
         {filteredCartoons.map((cartoon) => (
